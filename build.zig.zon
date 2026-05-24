@@ -7,15 +7,15 @@
 
     .dependencies = .{
         .ourio = .{
-            .url = "git+https://github.com/rockorager/ourio#f92122b30ce59737a67f276b030a783ff9de6486",
+            .url = "https://github.com/rockorager/ourio/archive/f92122b30ce59737a67f276b030a783ff9de6486.tar.gz",
             .hash = "ourio-0.0.0-_s-z0Q0YAgAojFrKt3kRlM7F7IlXMZUUms5yOsHeF5u9",
         },
         .zeit = .{
-            .url = "git+https://github.com/rockorager/zeit#74be5a2afb346b2a6a6349abbb609e89ec7e65a6",
+            .url = "https://github.com/rockorager/zeit/archive/74be5a2afb346b2a6a6349abbb609e89ec7e65a6.tar.gz",
             .hash = "zeit-0.6.0-5I6bk4t8AgCP0UGGHVF_khlmWZkAF5XtfQWEKCyLoptU",
         },
         .zzdoc = .{
-            .url = "git+https://github.com/rockorager/zzdoc#a54223bdc13a80839ccf9f473edf3a171e777946",
+            .url = "https://github.com/rockorager/zzdoc/archive/a54223bdc13a80839ccf9f473edf3a171e777946.tar.gz",
             .hash = "zzdoc-0.0.0-tzT1Ph7cAAC5YmXQXiBJHAg41_A5AUAC5VOm7ShnUxlz",
         },
     },
