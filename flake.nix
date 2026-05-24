@@ -2,16 +2,22 @@
   inputs = {
     utils.url = "github:numtide/flake-utils/main";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
+    zig-overlay = {
+      url = "github:mitchellh/zig-overlay/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, utils }:
+  outputs = { self, nixpkgs, utils, zig-overlay }:
     utils.lib.eachDefaultSystem(system:
       let
         pkgs = import nixpkgs { inherit system; };
         cache = import ./nix/cache.nix { inherit pkgs; };
+        zig = zig-overlay.packages.${system};
       in {
         devshells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [ zig zls ];
+          nativeBuildInputs = [ zig."0.15.1" pkgs.zls ];
         };
 
         packages.default = pkgs.stdenv.mkDerivation {
@@ -20,12 +26,13 @@
           doCheck = false;
           src = ./.;
 
-          nativeBuildInputs = with pkgs; [ zig ];
+          nativeBuildInputs = [ zig."0.15.1" ];
 
           buildPhase = ''
             export ZIG_GLOBAL_CACHE_DIR=$(mktemp -d)
             ln -sf ${cache} $ZIG_GLOBAL_CACHE_DIR/p
-            zig build -Doptimize=ReleaseFast --summary all
+            zig build -Dtarget=native-native-musl \
+              -Doptimize=ReleaseFast --summary all
           '';
 
           installPhase = ''
