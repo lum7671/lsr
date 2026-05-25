@@ -7,20 +7,27 @@
       url = "github:mitchellh/zig-overlay/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    zls-flake = {
+      url = "github:zigtools/zls/0.15.1";
+      inputs.zig-overlay.follows = "zig-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, utils, zig-overlay }:
+  outputs = { self, nixpkgs, utils, zig-overlay, zls-flake }:
     utils.lib.eachDefaultSystem(system:
       let
-        zig = zig-overlay.packages.${system};
+        zls = zls-flake.packages.${system}.default;
+        zig = zig-overlay.packages.${system}."0.15.1";
         pkgs = import nixpkgs { inherit system; };
         cache = import ./nix/cache.nix {
           inherit pkgs;
           inherit zig;
         };
       in {
-        devshells.default = pkgs.mkShell {
-          nativeBuildInputs = [ zig."0.15.1" pkgs.zls ];
+        devShells.default = pkgs.mkShell {
+          nativeBuildInputs = [ zig zls ];
         };
 
         packages.default = pkgs.stdenv.mkDerivation {
@@ -29,7 +36,7 @@
           doCheck = false;
           src = ./.;
 
-          nativeBuildInputs = [ zig."0.15.1" ];
+          nativeBuildInputs = [ zig ];
 
           buildPhase = ''
             export ZIG_GLOBAL_CACHE_DIR=$(mktemp -d)
