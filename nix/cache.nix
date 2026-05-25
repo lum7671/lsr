@@ -6,7 +6,7 @@ pkgs.stdenv.mkDerivation {
   doCheck = false;
   src = ../.;
 
-  nativeBuildInputs = [ zig."0.15.1" ];
+  nativeBuildInputs = [ zig ];
 
   buildPhase = ''
     export ZIG_GLOBAL_CACHE_DIR=$(mktemp -d)
