@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, zig, ... }:
 
 pkgs.stdenv.mkDerivation {
   pname = "lsr-cache";
@@ -6,7 +6,7 @@ pkgs.stdenv.mkDerivation {
   doCheck = false;
   src = ../.;
 
-  nativeBuildInputs = with pkgs; [ zig ];
+  nativeBuildInputs = [ zig."0.15.1" ];
 
   buildPhase = ''
     export ZIG_GLOBAL_CACHE_DIR=$(mktemp -d)
@@ -17,7 +17,7 @@ pkgs.stdenv.mkDerivation {
     mv $ZIG_GLOBAL_CACHE_DIR/p $out
   '';
 
-  outputHash = "sha256-bfc2dlQa1VGq9S6OBeQawAJuvfxU4kgFtQ13fuKhdZc=";
+  outputHash = "sha256-MehrWdJJof0XhABqLZ+teOeVOu/MfzvPsoQfQ0z6rp8=";
   outputHashMode = "recursive";
   outputHashAlgo = "sha256";
 }
