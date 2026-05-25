@@ -12,9 +12,12 @@
   outputs = { self, nixpkgs, utils, zig-overlay }:
     utils.lib.eachDefaultSystem(system:
       let
-        pkgs = import nixpkgs { inherit system; };
-        cache = import ./nix/cache.nix { inherit pkgs; };
         zig = zig-overlay.packages.${system};
+        pkgs = import nixpkgs { inherit system; };
+        cache = import ./nix/cache.nix {
+          inherit pkgs;
+          inherit zig;
+        };
       in {
         devshells.default = pkgs.mkShell {
           nativeBuildInputs = [ zig."0.15.1" pkgs.zls ];
